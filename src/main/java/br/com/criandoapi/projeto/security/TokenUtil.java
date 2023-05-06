@@ -22,7 +22,7 @@ public class TokenUtil {
     private static final String SECRET_KEY = "1fc2d79e162ead4a4f3d3fb99c66340d";
     private static final String EMISSOR = "DevNice";
 
-    private static String createToken(Usuario usuario) {
+    public static String createToken(Usuario usuario) {
         Key secretKey = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
         String token = Jwts.builder()
                 .setSubject(usuario.getNome())
@@ -47,7 +47,10 @@ public class TokenUtil {
 
     public static Authentication validate(HttpServletRequest request) {
         String token = request.getHeader(HEADER);
-        token.replace(PREFIX, "");
+        System.out.println("\n O token complento:" + token);
+        token = token.replace(PREFIX, "");
+        System.out.println("--------------------------------------");
+        System.out.println("\n O token sem PREFIX:" + token);
 
         Jws<Claims> jwsClaims = Jwts.parserBuilder().setSigningKey(SECRET_KEY.getBytes())
                 .build().parseClaimsJws(token);
